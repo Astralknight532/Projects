@@ -2,6 +2,35 @@
 import React from 'react';
 import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
+import SQLite from 'react-native-sqlite-2';
+
+const VARdatabase = SQLite.openDatabase('VetApp', '1.0', '', 1);
+VARdatabase.transaction(function(trCreate) {
+  trCreate.executeSql(
+    'CREATE TABLE IF NOT EXISTS appointments(aptID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT, aptType VARCHAR(60) NOT NULL, petID_ref INTEGER NOT NULL, date VARCHAR(60) NOT NULL, time VARCHAR(60) NOT NULL, petName VARCHAR(60) NOT NULL, notes VARCHAR(255), FOREIGN KEY (petID_ref) REFERENCES pets(petID))',
+    [],
+  );
+  trCreate.executeSql(
+    'CREATE TABLE IF NOT EXISTS boarding(boardID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT, startDate DATE NOT NULL, endDate DATE NOT NULL, aptID_ref INTEGER NOT NULL, FOREIGN KEY (aptID_ref) REFERENCES appointments(aptID))',
+    [],
+  );
+  trCreate.executeSql(
+    'CREATE TABLE IF NOT EXISTS medications(medID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT, medName VARCHAR(60) NOT NULL, medRenewalDate VARCHAR(60) NOT NULL, medDosage INTEGER NOT NULL, petID_ref INTEGER NOT NULL, medType VARCHAR(60) NOT NULL, FOREIGN KEY (petID_ref) REFERENCES pets(petID))',
+    [],
+  );
+  trCreate.executeSql(
+    'CREATE TABLE IF NOT EXISTS messages(messageID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT, ownerID_ref INTEGER NOT NULL, subject VARCHAR(60), text VARCHAR(255) NOT NULL, FOREIGN KEY (ownerID_ref) REFERENCES owners(ownerID))',
+    [],
+  );
+  trCreate.executeSql(
+    'CREATE TABLE IF NOT EXISTS owners(ownerID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT, firstName VARCHAR(60) NOT NULL, lastName VARCHAR(60) NOT NULL, phoneNumber VARCHAR(60), email VARCHAR(60), username VARCHAR(60) NOT NULL, password VARCHAR(60) NOT NULL)',
+    [],
+  );
+  trCreate.executeSql(
+    'CREATE TABLE IF NOT EXISTS pets(petID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT, petName VARCHAR(60) NOT NULL, petAge INTEGER, petType VARCHAR(60) NOT NULL, petBreed VARCHAR(60) NOT NULL, petWeight INTEGER, ownerID_ref INTEGER NOT NULL, FOREIGN KEY (ownerID_ref) REFERENCES owners(ownerID))',
+    [],
+  );
+});
 
 class LoginPage extends React.Component {
   render() {
@@ -61,7 +90,7 @@ class SignUpPage extends React.Component {
           <TextInput placeholder="Your password" />
         </View>
         <Text>
-          Passwords must be 8-12 characters long and contain a mix of capital
+          Passwords must be 8-12 characters long and contain a mix of uppercase
           and lowercase letters, numbers, and symbols. They must not contain
           your username or any personal information.
         </Text>
