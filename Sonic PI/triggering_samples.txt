@@ -1,0 +1,83 @@
+# Triggering samples
+#sample :ambi_lunar_land
+
+#play 36
+#play 48
+#sample :ambi_lunar_land
+#sample :ambi_drone
+
+#sample :ambi_lunar_land
+#sleep 1
+#play 48
+#sleep 0.5
+#play 36
+#sample :ambi_drone
+#sleep 1 # the sleep command only sets the amount of time between when sounds get triggered - can use this to overlap sounds for interesting effects
+#play 36
+
+# using amp with samples
+#sample :ambi_lunar_land, amp: 0.5
+
+# using pan with samples
+#sample :loop_amen, pan: -1
+#sleep 0.877
+#sample :loop_amen, pan: 1
+
+# Sample rate changing
+#sample :ambi_choir, rate: 1 # default play rate
+#sleep 2
+#sample :ambi_choir, rate: 0.5 # half rate (twice as long to play sample, sample is 1 octave lower)
+
+# Sample stretching/compressing - values > 1 to speed up, values < 1 to slow down, negative values to play samples backwards (also affects pitch)
+#sample :loop_amen, rate: 0.75
+
+# Samples & envelopes - can only decrease amplitude & duration of samples (unlike with sounds/synths)
+#sample :loop_amen, attack: 0.3 # adds a fade-in to the sample
+
+# See the duration of the loop_amen sample
+#print sample_duration :loop_amen
+
+#sample :loop_amen, attack: 0.75, release: 0.75 # since the sample is 1.75s long & the attack & release take up 1.5s together, the sustain is set to 0.25s
+
+# explicitly specifying the sustain
+#sample :loop_amen, sustain: 0, release: 0.75 # makes the sample only play for 0.75s
+
+# percussive samples made from longer samples
+#sample :drum_cymbal_open, attack: 0.01, sustain: 0.3, release: 0.1
+
+# partial samples
+#sample :loop_amen, rate: 2, attack: 0.01, sustain: 0, release: 0.35
+
+# set the starting point
+#sample :loop_amen, start: 0.5 # start halfway through the sample
+#sample :loop_amen, start: 0.75 # start 3/4 of the way into the sample
+
+# set the ending point
+#sample :loop_amen, finish: 0.5 # end the sample halfway through
+
+# using start & finish together
+#sample :loop_amen, start: 0.4, finish: 0.6 # only plays certain section of sample
+#sample :loop_amen, start: 0.6, finish: 0.4 # plays backwards
+
+# using start, finish, & rate together
+#sample :loop_amen, start: 0.5, finish: 0.7, rate: 0.2
+
+# using start, finish, rate, and envelopes together
+#sample :loop_amen, start: 0.5, finish: 0.8, rate: -0.2, attack: 0.3, release: 1
+
+# Using external samples:
+# sample "full file path" (parameters)
+# example:
+# sample "C:/Users/test/Desktop/test_sound.wav", rate: 0.5, amp: 0.3
+
+# Using external sample packs:
+# can index the samples inside the packs
+# sample "full file path to sample folder (instead of individual samples)", 0 #sets the 1st sample as index 0
+
+# Can also use a variable to make a shortcut to the folder with the samples
+# samps = "full file path to folder"
+# sample samps, 0 # sets 1st sample in the folder as index 0
+
+# Set 2nd sample in the folder
+# samps = "full file path to folder"
+# sample samps, 1

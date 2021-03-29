@@ -1,0 +1,43 @@
+# Time State in Sonic-Pi (sharing info across threads)
+
+## Set & Get
+
+### Set
+#set :intensity, 1000
+#set :intensity, 3000 # can use any name for a key, but calling set on the same key will overwrite the previous info
+
+### Get
+#print get[:intensity] # prints 3000, this info will be available until it gets overwritten or Sonic-Pi is closed
+
+### Mutliple threads - this will always produce the same result every time you run it
+#live_loop :setter do
+#  set :foo, rrand(70, 130)
+#  sleep 1
+#end
+
+#live_loop :getter do
+#  puts get[:foo]
+#  sleep 0.5
+#end
+
+#set :a, (ring 6, 5, 4, 3, 2, 1)
+#live_loop :shuffled do
+#  set :a, get[:a].shuffle
+#  sleep 0.5
+#end
+
+#live_loop :sorted do
+#  set :a, get[:a].sort
+#  sleep 0.5
+#  puts "sorted: ", get[:a]
+#end
+
+## Sync
+#in_thread do
+#  amp = sync :foo
+#  sample :ambi_lunar_land, amp: amp
+#end
+#sleep 2
+#set :foo, 0.5
+
+## Pattern Matching

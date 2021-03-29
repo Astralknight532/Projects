@@ -1,0 +1,62 @@
+# Data Structures in Sonic-Pi
+
+## Lists
+#play [52, 55, 59], amp: 0.3 # using the MIDI numbers
+#play [:E3, :G3, :B3] # using the note names instead of MIDI numbers, this is the E Minor chord in the 3rd octave
+#puts [52, 55, 59][1] # print out the 2nd element in the list
+
+## Chords
+#play chord(:E3, :minor)
+#sleep 1
+#play chord(:E3, :m7)
+#sleep 1
+#play chord(:E3, :dim7)
+#sleep 1
+#play chord(:E3, :dom7)
+
+### Arpeggios
+#play_pattern chord(:E3, :m7) # play a pattern of chords with a call to sleep 1 in between each call to play
+#play_pattern_timed chord(:E3, :m7), 0.25 # play a pattern of chords with the specified sleep time in between calls to play
+#play_pattern_timed chord(:E3, :m7), [0.25, 0.5] # Using a list of times will treat it as a circle of times (alternating between sleep 0.25 and sleep 0.5)
+
+## Scales
+#play_pattern_timed scale(:c3, :major), 0.125, release: 0.1 # C3 major scale
+#play_pattern_timed scale(:c3, :major, num_octaves: 3), 0.125, release: 0.1 # C3 major scale with more octaves
+#play_pattern_timed scale(:c3, :major_pentatonic, num_octaves: 3), 0.125, release: 0.1 # C3 major pentatonic scale
+
+### Random notes from a chord
+#use_synth :tb303
+#loop do
+#  play choose(chord(:E3, :minor)), release: 0.3, cutoff: rrand(60, 120)
+#  sleep 0.25
+#end
+
+## Rings - 2 ways to make a ring
+### 1.
+#(ring 52, 55, 59)
+
+### 2.
+#[52, 55, 59].ring
+
+### Rings can take indexes larger or smaller than the ring's size and wrap around to point to 1 of the elements in the ring
+### Scales & chords are also rings
+
+### Ring constructors:
+### range (specify start point, end point & step size)
+### bools (use 1s and 0s to represent booleans)
+### knit (knit a sequence of repeated values)
+### spread (create a ring of bools with Euclidean distribution)
+
+## Ring Chains
+#(ring 10, 20, 30, 40, 50).reverse # reversing a ring - this is the same as (ring 50, 40, 30, 20, 10)
+#(ring 10, 20, 30, 40, 50).take(3) # getting the first 3 values of the ring - this is the same as (ring 10, 20, 30)
+#(ring 10, 20, 30, 40, 50).shuffle # shuffling the ring - (ring 40, 30, 10, 50, 20)
+
+### chaining ring commands together
+#r1 = (ring 10, 20, 30, 40, 50).shuffle.drop(1).take(3)
+#puts r1
+# shuffle will shuffle the ring into [40, 30, 10, 50, 20]
+# drop(1) removes the 1st element from the ring/returns a new ring without the 1st element (or first n elements if some other number is passed in)
+# take(3) gets the first 3 elements from the ring
+# rings are immutable (that means the methods above create new rings rather than changing them, and that rings can be shared across threads
+# & chained within a thread since other threads using the same ring won't be affected)

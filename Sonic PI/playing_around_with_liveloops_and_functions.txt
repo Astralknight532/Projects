@@ -1,0 +1,30 @@
+define :my_sound do
+  use_synth :tb303
+  sample :drum_bass_hard, rate: rrand(0.5, 2)
+  play choose(chord(:e3, :minor)), release: 0.35, cutoff: rrand(60, 130)
+  sleep 0.25
+end
+
+#in_thread(name: :looper) do
+#  loop do
+#    my_sound
+#  end
+#end
+
+live_loop :foo do
+  my_sound
+end
+
+live_loop :foo2 do
+  sync :foo
+  sample :loop_garzul
+  use_synth :prophet
+  play :c1, release: 8, cutoff: rrand(70, 130)
+  sleep 8
+end
+
+live_loop :bar do
+  sync :foo
+  sample :bd_haus
+  sleep 0.5
+end

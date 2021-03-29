@@ -1,0 +1,33 @@
+#play 70
+#play 75
+#play 60 # plays the note C of the 4th octave
+#play 61 # plays the note C sharp of the 4th octave
+#play 62 # plays the note D of the 4th octave
+
+# playing multiple notes simultaneously
+#play 72
+#play 75
+#play 79
+
+# playing notes consecutively
+#play 72
+#sleep 0.5
+#play 75
+#sleep 0.5
+#play 79
+
+# In-between notes
+#play 52.3
+#sleep 0.5
+#play 52.63
+
+# Can also specify note names instead of numbers (as well as the octave) - just add a colon before the note name (can also make notes sharp/flat)
+play :C3 # C 3rd octave
+sleep 0.5
+play :D3 # D 3rd octave
+sleep 0.5
+play :E4 # E 4th octave
+sleep 0.5
+play :Fs3 # F-sharp 3rd octave
+sleep 0.5
+play :Eb3 # E-flat 3rd octave

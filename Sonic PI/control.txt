@@ -1,0 +1,44 @@
+# Controlling running sounds in Sonic-Pi
+
+## Controlling running synths - can pass any of the standard opts to control as well, like amp:, cutoff:, and pan:
+#s = play 60, release: 5 # run-local variable, meaning it can only be accessed in this run/buffer
+# (unlike functions, which can be accessed in other ones)
+#sleep 0.5
+#control s, note: 65
+#sleep 0.5
+#control s, note: 67
+#sleep 3
+#control s, note: 72
+# However, there are opts that can't be controlled once the synth has started (like all the ADSR - attack, decay, sustain, release -
+# envelope parameters & any opts that say "can't be changed once set" in the documentation)
+
+## Controlling FX
+#with_fx :reverb do |r|
+#  play 50
+#  sleep 0.5
+#  control r, mix: 0.7
+#  play 55
+#  sleep 1
+#  control r, mix: 0.9
+#  sleep 1
+#  play 62
+#end
+
+## Sliding Options
+#s = play 60, release: 5, note_slide: 0.2 # note_slide makes the pitch slide between note changes & the number dictates the slide time
+# (but only when using control, and other controllable parameters also have a _slide parameter)
+#sleep 0.5
+#control s, note: 65
+#sleep 0.5
+#control s, note: 67
+#sleep 3
+#control s, note: 72
+### once a _slide parameter's set on a running synth, it'll be used every time that corresponding parameter slides, so
+### stopping the slide requires setting the _slide to 0 before the next control is called
+
+### Using _slide with FX options
+#with_fx :wobble, phase: 1, phase_slide: 5 do |e|
+#  use_synth :dsaw
+#  play 50, release: 5
+#  control e, phase: 0.025
+#end

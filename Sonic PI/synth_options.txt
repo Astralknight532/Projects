@@ -1,0 +1,21 @@
+# Synth options
+
+# using amp: to change amplitude
+
+#play 60, amp: 0.5
+#sleep 0.5
+#play 65
+
+#play 50, amp: 0.1
+#sleep 0.25
+#play 55, amp: 0.2
+#sleep 0.25
+#play 57, amp: 0.4
+#sleep 0.25
+#play 62, amp: 1
+
+# using pan: to change panning
+
+#play 60, pan: -1 # play from left speaker
+#play 60, pan: 1 # play from right speaker
+play 60, pan: 0 # play from center

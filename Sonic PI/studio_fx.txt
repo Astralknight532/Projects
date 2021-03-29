@@ -1,0 +1,83 @@
+# Studio FX in Sonic-Pi
+
+## Adding FX - make use of blocks, and can also pass opts to FX blocks
+
+### Reverb
+#play 55
+#sleep 1
+
+#with_fx :reverb do # anything played inside this block will have reverb added & anything outside will not
+#  play 50
+#  sleep 0.5
+#  sample :elec_plip
+#  sleep 0.5
+#  play 62
+#end
+
+#sleep 1
+#play 55
+
+### Echo
+#with_fx :echo, phase: 0.5 do # adding the phase opt to the echo to change the duration of an echo (0.5 will make it slower)
+#  play 50
+#  sleep 0.5
+#  sample :elec_plip
+#  sleep 0.5
+#  play 62
+#end
+
+#with_fx :echo, phase: 0.125 do # make the echo faster
+#  play 50
+#  sleep 0.5
+#  sample :elec_plip
+#  sleep 0.5
+#  play 62
+#end
+
+#with_fx :echo, phase: 0.5, decay: 8 do # make the echo take longer to fade away by changing the decay time
+#  play 50
+#  sleep 0.5
+#  sample :elec_plip
+#  sleep 0.5
+#  play 62
+#end
+
+### Nesting FX - in this example, the code is sent through an echo FX first, then sent through a reverb FX (the audio goes from the inside out)
+# however, be careful about nesting FX too deeply, since it's resource-intensive to do so
+#with_fx :reverb do
+#  with_fx :echo, phase: 0.5, decay: 8 do
+#    play 50
+#    sleep 0.5
+#    sample :elec_blup
+#    sleep 0.5
+#    play 62
+#  end
+#end
+
+## FX in Practice
+
+### Simulate only having 1 reverb pedal in real life
+#with_fx :reverb do # create only 1 reverb for all notes played in the loop
+#  loop do
+#    play 60, release: 0.1
+#    sleep 0.125
+#  end
+#end
+
+### Another variation (but slightly more resource-intensive than the above example)
+#loop do
+#  with_fx :reverb do # only creates a new reverb every 16 notes
+#    16.times do
+#      play 60, release: 0.1
+#      sleep 0.125
+#    end
+#  end
+#end
+
+### A cleaner version of the above variation (using an opt for with_fx)
+#loop do
+#  with_fx :reverb, reps: 16 do
+#    play 60, release: 0.1
+#    sleep 0.125
+#  end
+#end

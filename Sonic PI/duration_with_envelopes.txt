@@ -1,0 +1,37 @@
+#play 70 # default release
+#sleep 2
+#play 70, release: 1 # default release but specifically called
+#sleep 2
+#play 70, release: 2 # increased release - longer note
+#sleep 2
+#play 60, release: 2
+#sleep 2
+#play 60, release: 0.2 # decreased release - shorter note
+
+# attack
+#play 60, attack: 2
+#sleep 3
+#play 65, attack: 0.5
+
+# multiple parameters/opts at once
+#play 60, attack: 0.7, release: 4 # short attack, long release
+#play 60, attack: 4, release: 0.7 # long attack, short release
+#play 60, attack: 0.5, release: 0.5 # short attack & release
+
+# sustain
+#play 60, attack: 0.3, sustain: 1, release: 1
+
+# decay
+#play 60, attack: 0.1, attack_level: 1, decay: 0.2, sustain_level: 0.4, sustain: 1, release: 0.5
+#play 60, attack: 0.1, attack_level: 1, decay: 0.2, decay_level: 0.3, sustain: 1, sustain_level: 0.4, release: 0.5
+#play 60, attack: 0.1, attack_level: 0.1, decay: 0.2, decay_level: 1, sustain: 0.5, sustain_level: 0.8, release: 1.5
+
+# Overview of Sonic Pi's ADSR envelopes
+# attack - amount of time to go from 0 amplitude to the value of attack_level
+# decay - amount of time to move the amplitude from the value of attack_level to the value of decay_level
+# sustain - amount of time to move the amplitude from the value of decay_level to the value of sustain_level
+# release - amount of time to move the amplitude from the value of sustain_level to 0
+
+# the duration of a sound is the sum of these 4 phases' times
+play 60, attack: 0.5, attack_level: 1, decay: 1, sustain_level: 0.4, sustain: 2, release: 0.5 # this sound will have a duration of 4 beats
+# attack + decay + sustain + release -> 0.5 + 1 + 2 + 0.5 = 4

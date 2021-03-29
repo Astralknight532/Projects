@@ -1,0 +1,291 @@
+# Programming Structures in Sonic-Pi
+
+# Basic Loops
+#3.times do
+#  play 50
+#  sleep 0.5
+#  sample :elec_blup
+#  sleep 0.5
+#  play 62
+#  sleep 0.25
+#end
+
+#4.times do
+#  play 50
+#  sleep 0.5
+#end
+
+#8.times do
+#  play 55, release: 0.2
+#  sleep 0.2
+#end
+
+# Nested Loops
+#4.times do
+#  sample :drum_heavy_kick
+#  2.times do
+#    sample :elec_blip2, rate: 2
+#    sleep 0.25
+#  end
+
+#  sample :elec_snare
+#  4.times do
+#    sample :drum_tom_mid_soft
+#    sleep 0.125
+#  end
+#end
+
+# Infinite Loops (until you press the stop button)
+#loop do
+#  sample :loop_amen
+#  sleep sample_duration :loop_amen
+#end
+
+#loop do
+#  play 50
+#  sleep 1
+#end
+
+# Conditionals
+#loop do
+#  if one_in(2)
+#    sample :drum_heavy_kick
+#    sleep 0.5
+#  else
+#    sample :drum_cymbal_closed
+#    sleep 0.25
+#  end
+#end
+
+#use_synth :dsaw
+#loop do
+#  play 50, amp: 0.3, release: 2
+#  play 53, amp: 0.3, release: 2 if one_in(2)
+#  play 57, amp: 0.3, release: 2 if one_in(3)
+#  play 60, amp: 0.3, release: 2 if one_in(4)
+#  sleep 1.5
+#end
+
+# Threads - use in_thread to separate each code block into its own thread so that each one can be layered with others so they'll play simultaneously
+# each press of the run button makes a new thread that runs the code in the current buffer (also layering it)
+#in_thread do
+#  loop do
+#    sample :drum_heavy_kick
+#    sleep 1
+#  end
+#end
+
+#in_thread do
+#  loop do
+#    use_synth :fm
+#    play 40, release: 0.2
+#    sleep 0.5
+#  end
+#end
+
+#loop do
+#  use_synth :zawa
+#  play 52, release: 2.5, phase: 2, amp: 0.5
+#  sleep 2
+#end
+
+# Scope - threads are also useful for having different sets of settings for different blocks of code
+# For example, switching to a different synth in 1 thread won't affect other threads since you're only switching it for the thread that use_synth is called in
+#play 50
+#sleep 1
+
+#in_thread do
+#  use_synth :tb303
+#  play 50
+#end
+
+#sleep 1
+#play 50
+
+# Inheritance - when making a new thread using in_thread, the new thread inherits the current settings of the current thread
+#use_synth :tb303
+#play 50
+#sleep 1
+
+#in_thread do # this thread is still using the tb303 synth - changes made in the scope of this new thread won't affect the parent, but changes made to the parent will affect this thread
+#  play 55
+#end
+
+# Naming threads
+#in_thread(name: :bass) do
+#  loop do
+#    use_synth :prophet
+#    play chord(:e2, :m7).choose, release: 0.6
+#    sleep 0.5
+#  end
+#end
+
+#in_thread(name: :drums) do
+#  loop do
+#    sample :elec_snare
+#    sleep 1
+#  end
+#end
+
+# However, named threads do not layer multiple times when you press the run button multiple times (unlike with unnamed threads or other code)
+# This will be useful for live coding.
+
+#in_thread(name: :amen) do
+#  loop do
+#    sample :loop_amen
+#    sleep sample_duration :loop_amen
+#  end
+#end
+
+# Functions - organizing/structuring code for tidiness & ease of understanding
+
+# Defining functions
+#define :foo do
+#  play 50
+#  sleep 1
+#  play 55
+#  sleep 2
+#end
+
+# Calling functions - can also call functions inside loops(iteration blocks) or anywhere that play or sample could've been used
+#foo
+#sleep 1
+
+#2.times do
+#  foo
+#end
+
+# Functions are retained across runs (unlike other code in the buffer),
+# so calling foo in this case would still work even after the define code has been removed
+
+# Parameterized functions
+#define :my_player do |n| # our own version of play
+#  play n
+#end
+
+#my_player 80
+#sleep 0.5
+#my_player 90
+
+# parameterized function to play chords
+#define :chord_player do |root, repeats|
+#  repeats.times do
+#    play chord(root, :minor), release: 0.3
+#    sleep 0.5
+#  end
+#end
+
+#chord_player :e3, 2
+#sleep 0.5
+#chord_player :a3, 3
+#chord_player :g3, 4
+#sleep 0.5
+#chord_player :e3, 3
+
+# Variables - used to communicate meaning, manage repetition, and capturing results
+#sample_name = :loop_amen
+#sample sample_name
+
+# Using meaningful variable names
+#loop_amen_duration = 1.7533
+#sleep loop_amen_duration # alternatively, sleep sample_duration(:loop_amen)
+
+# Reducing repetition
+
+# Highly repetitive (:loop_amen gets repeated a lot):
+#sample :loop_amen
+#sleep sample_duration(:loop_amen)
+#sample :loop_amen, rate: 0.5
+#sleep sample_duration(:loop_amen, rate: 0.5)
+#sample :loop_amen
+#sleep sample_duration(:loop_amen)
+
+# Less repetition (and can change to another sample easily just by changing the variable's value):
+#sample_name = :loop_amen # change it to any other sample, like :loop_garzul
+#sample sample_name
+#sleep sample_duration(sample_name)
+#sample sample_name, rate: 0.5
+#sleep sample_duration(sample_name, rate: 0.5)
+#sample sample_name
+#sleep sample_duration(sample_name)
+
+# Capturing results with variables
+
+# duration of :loop_amen
+#sd = sample_duration(:loop_amen) # can now be used anywhere we need the sample's duration
+
+# the result of calling play or sample
+#s = play 50, release: 8
+# we can now control the synth that s is running
+#sleep 2
+#control s, note: 62
+
+# Warning/note when using variables & threads together
+# Variables should only be used locally within a thread (don't use the same variable in multiple live loops/threads)
+# If you do want to share things between threads, use the get & set functions in Sonic-Pi (which are thread-safe)
+
+#live_loop :shuffled do
+#  a = (ring 6, 5, 4, 3, 2, 1)
+#  a = a.shuffle
+#  sleep 0.5
+#end
+
+#live_loop :sorted do
+#  a = (ring 6, 5, 4, 3, 2 ,1)
+#  a = a.sort
+#  sleep 0.5
+#  puts "sorted: ", a
+#end
+
+# Thread synchronization - threads that start simultaneously are always in time with each other, but starting a thread on its own
+# will mean it starts on its own time & likely be out of sync with other running threads
+
+# Use cue & sync to handle this issue
+# cue - send heartbeat messages to other threads
+# sync - stops the current thread from doing other things for a certain time
+# (just like sleep, except you can't specify wait time with sync, so you don't know how long you'll be waiting since sync waits for the
+# next call to cue from another thread)
+
+#in_thread do # acts as a metronome to send out heartbeat messages :tick every beat
+#  loop do
+#    cue :tick
+#    sleep 1
+#  end
+#end
+
+# the sample will play exactly when the other thread sends :tick even if the 2 threads don't start running simultaneously
+#in_thread do # synchronizes based on :tick & inherits the time of the cue thread (and keeps running) when :tick is received
+#  loop do
+#    sync :tick
+#    sample :drum_heavy_kick
+#  end
+#end
+
+# Naming cues - you can use any name (not necessarily tick) but you have to make sure that threads sync on the correct name
+in_thread do # randomly sends 1 of the heartbeat names to 3 threads that each sync to a different name, causing each one to play at different times
+  loop do
+    cue [:foo, :bar, :baz].choose
+    sleep 0.5
+  end
+end
+
+in_thread do
+  loop do
+    sync :foo
+    sample :elec_beep
+  end
+end
+
+in_thread do
+  loop do
+    sync :bar
+    sample :elec_flip
+  end
+end
+
+in_thread do
+  loop do
+    sync :baz
+    sample :elec_blup
+  end
+end
