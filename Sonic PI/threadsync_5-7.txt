@@ -1,0 +1,57 @@
+# Thread synchronization
+# new threads created with in_thread inherit all settings from the parent thread (including current time)
+# the threads are always in time with each other when started simultaneously
+# starting a thread on its own gives it its own time, which might not be in sync with other currently running threads
+# cue & sync can be used to address this issue
+# cue - send out a heartbeat message to other threads (the other threads normally ignore the heartbeat message,
+# but you can register their interest in the heartbeat message using sync)
+# sync - prevents the current thread from doing things for a certain time period, but you don't know how long you'll have to wait
+# (unlike sleep where you can specify how long it waits) since sync waits for the next cue from another thread
+in_thread do # this thread acts as a metronome by sending :tick as a heartbeat message every beat
+  loop do
+    cue :tick
+    #sample :perc_snap
+    sleep 1
+  end
+end
+
+#sleep(0.3) # this would normally make the 2nd thread out of sync of the 1st thread, but cue & sync
+# allows for the sleep to be bypassed
+
+#in_thread do # this thread synchronizes on the :tick heartbeat messages & inherits the time of the cue thread when it receives :tick
+#  loop do
+#    sync :tick
+#    sample :drum_heavy_kick
+#  end
+#end
+
+# the cue message can be named anything (not necessarily :tick) as long as the other threads use the desired name with sync
+# here, a cue heartbeat msg is randomly sent to 1 of 3 threads (foo, bar, baz) & when that respective thread is sent the
+# cue heartbeat msg, it plays its sound & that cue is sent every 0.5 seconds, so there will be 0.5 seconds between sounds
+in_thread do
+  loop do
+    cue [:foo, :bar, :baz].choose
+    sleep 0.5
+  end
+end
+
+in_thread do
+  loop do
+    sync :foo
+    sample :elec_beep
+  end
+end
+
+in_thread do
+  loop do
+    sync :bar
+    sample :elec_flip
+  end
+end
+
+in_thread do
+  loop do
+    sync :baz
+    sample :elec_blup
+  end
+end

@@ -1,0 +1,30 @@
+# example of using variables
+#sample_name = :loop_garzul # used to be :loop_amen
+#sample sample_name
+#sleep sample_duration(sample_name)
+#sample sample_name, rate: 0.5
+#sleep sample_duration(sample_name, rate: 0.5)
+#sample sample_name
+#sleep sample_duration(sample_name)
+
+#sd = sample_duration(:loop_amen)
+#s = play 50, release: 8
+#sleep 2
+#control s, note:62
+
+# Note, variables should only be used locally within a thread
+# Do not use the same variable in multiple liveloops/threads
+# Give each liveloop/thread its own variable
+# If you do need to share things across liveloops/threads, use Sonic Pi's built-in state system via the get & set functions
+live_loop :shuffled do
+  a = (ring 6, 5, 4, 3, 2, 1)
+  a = a.shuffle
+  sleep 0.5
+end
+
+live_loop :sorted do
+  a = (ring 6, 5, 4, 3, 2, 1)
+  a = a.sort
+  sleep 0.5
+  puts "sorted: ", a
+end
