@@ -1,0 +1,6 @@
+Log levels:
+DEBUG - developer details
+INFO - pipeline progress
+WARNING - something odd/strange
+ERROR - task failed
+CRITICAL - system failure
