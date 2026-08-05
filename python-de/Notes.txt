@@ -4,3 +4,13 @@ INFO - pipeline progress
 WARNING - something odd/strange
 ERROR - task failed
 CRITICAL - system failure
+
+Debugging Python code:
+last line of the error message -> error type
+lines above the last line of the error message -> call path of the error
+defensive fixes - make functions raise their own errors instead of waiting for Python to do it
+
+Using Snowflake with Python:
+requires the Snowflake driver to be installed via pip
+Python to Snowflake flow:
+Python code -> Snowflake driver -> Snowflake engine -> Tables (in Snowflake)
