@@ -14,3 +14,39 @@ Using Snowflake with Python:
 requires the Snowflake driver to be installed via pip
 Python to Snowflake flow:
 Python code -> Snowflake driver -> Snowflake engine -> Tables (in Snowflake)
+
+Using APIs with Python:
+REST basics:
+types of requests:
+GET - fetch data
+POST - send data
+PUT/PATCH - update data
+DELETE - remove data
+
+Note: accessing APIs does have limitations (dependent on the API) on requests/rates
+read the API's website for details on those limitations
+example of real API with live data - finhub (live stock data)
+
+Pagination when retrieving data from APIs:
+partitions the fetching of the data so that it can be fetched in chunks
+instead of all at once since doing it all at once could crash the system
+due to the resource load. It also helps with APIs that contain large amounts of data.
+
+API retry logic (related to APIs' request limitations):
+HTTP codes:
+200-299 -> successful
+400 - 499 -> failed
+
+Object Oriented Programming (OOP) in Python:
+use it to reduce complexity, not create it
+not applicable to every situation, so need to be careful when/where it gets used
+be mindful of efficiency
+if there is a need for shared state, shared context, or shared configuration then OOP might be useful
+a class works like a container for functions with shared state/context/configuration
+
+Class structure for a data pipeline:
+DataPipeline
+    extract_data() - extract task
+    transform_data() - transform task
+    load_data() - load task
+    run() - used to orchestrate the extract, transform, & load tasks
