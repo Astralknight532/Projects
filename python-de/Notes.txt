@@ -50,3 +50,18 @@ DataPipeline
     transform_data() - transform task
     load_data() - load task
     run() - used to orchestrate the extract, transform, & load tasks
+
+Performance optimization in Python:
+Python itself is slow, so optimization via how programs are written is necessary
+Using packages to work on things is way more efficient, if chosen correctly
+Badly formed loops, unnecessary memory usage, doing tasks in Python that
+you're not meant to do in Python
+Don't load in files that you don't need
+Copying dataframes & holding dataframes (which are in memory) for longer than needed
+are also not good
+Data saved in variables & data structures are in memory during Python code runtime,
+so having data too large in size/count will slow down the system
+Hold data only when it's necessary - matters less with small datasets,
+but with industry/production huge datasets, it changes a lot
+Use vectorized methods (Pandas, which uses C under the hood) instead of loops (matters less for small data, but is huge for larger datasets)
+For example, don't loop through data that can be converted into a table format (for example, Pandas dataframes)
