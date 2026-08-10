@@ -1,17 +1,27 @@
 import snowflake.connector # this allows the code to connect to Snowflake
 
+# these imports will allow for the code to call the .env file
+# and use environment variables to access the secrets needed
+import os
+from dotenv import load_env
+
+# load the .env file's credentials
+load_dotenv()
+
 # configuring the Snowflake connection(s)
 # requires existing Snowflake username, password, account, warehouse, & database
 conn = snowflake.connector.connect(
-    user = "YOUR_USERNAME", # Snowflake username
-    password = "YOUR_PASSWORD", # Snowflake password
-    account = "YOUR_ACCOUNT_ID", # Snowflake account
+    user = os.getenv("SNOWFLAKE_USERNAME"), # Snowflake username retrieved from .env file
+    password = os.getenv("SNOWFLAKE_PASSWORD"), # Snowflake password retrieved from .env file
+    account = os.getenv("SNOWFLAKE_ACCOUNTID"), # Snowflake account retrieved from .env file
     warehouse = "YOUR_WAREHOUSE_NAME", # desired Snowflake warehouse to connect to
     database = "YOUR_DATABASE_NAME", # desired Snowflake database to connect to
     schema = "YOUR_SCHEMA_NAME" # desired Snowflake database's schema
 )
-# Note: don't actually do this, because it exposes credentials in the code
-# itself to anyone who sees the code - need to use environment variables
+# Note: don't hardcode the credentials because it exposes them in the code
+# itself to anyone who sees the code
+# Use environment variables for this instead - define them in a .env file
+# don't upload the .env file into the repository by adding .env files to .gitignore
 
 # create/open/define the cursor to use on the Snowflake DB for running SQL queries
 cursor = conn.cursor()

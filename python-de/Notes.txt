@@ -65,3 +65,21 @@ Hold data only when it's necessary - matters less with small datasets,
 but with industry/production huge datasets, it changes a lot
 Use vectorized methods (Pandas, which uses C under the hood) instead of loops (matters less for small data, but is huge for larger datasets)
 For example, don't loop through data that can be converted into a table format (for example, Pandas dataframes)
+
+Concurrency in Python:
+Multithreading in Python:
+One process at a time
+Shared memory
+GIL (global interpreter lock) bottleneck - can only perform 1 Python task at a time
+
+Multiprocessing in Python:
+Multiple processes at a time
+Separate memory
+True parallelism
+
+Rather than just using Python alone to transform data, use other tools like PySpark
+to do distributed & parallel computing while Python is just there to orchestrate
+
+Managing secrets/keys in real-world & production projects:
+Use environment variables to hide secrets/keys from those who read Python code,
+instead of hard-coding these secrets/keys/credentials into the code
