@@ -1,3 +1,6 @@
+# Associated Youtube video
+[SQL For Big Data Engineering [Full Course 2025]](https://youtube.com/watch?v=b0TCqhP2P7I)
+
 # Intro
 Every big data project these days makes use of distributed computing. SQL is used frequently, even with distributed computing. A widely used tool for this is Spark/Spark SQL.
 
