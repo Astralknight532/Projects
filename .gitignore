@@ -1,0 +1,16 @@
+
+# python-de venv files
+python-de/venv/**
+
+# GitHub Actions cache
+/.github/.cache
+
+# Other excluded files
+.env
+__pycache__/
+*.pyc
+.vscode/
+.idea/
+.DS_Store
+docker-compose.override.yml
+logs/

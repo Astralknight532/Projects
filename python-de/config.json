@@ -1,0 +1,4 @@
+{
+    "source": "data/raw/dirty_orders.csv",
+    "destination": "data/cleaned/cleaned_orders.csv"
+}
