@@ -1,0 +1,25 @@
+use_bpm 120 # set bpm
+define :pattern do |pattern| # allows for you to define note patterns using a string of dashes and x's
+  return pattern.ring.tick == "x"
+end
+live_loop :metronome do # create a metronome for all other live loops to sync to
+  sleep 1
+end
+live_loop :open_hat, sync: :metronome do
+  sample :drum_cymbal_open, amp: 0.5, attack: 0.01, decay: 0.01 if pattern "----------------"
+  sleep 0.25
+end
+live_loop :closed_hat, sync: :metronome do
+  sample :drum_cymbal_closed, amp: 1 if pattern "--x---x---x---x-"
+  sleep 0.25
+end
+live_loop :snare, sync: :metronome do
+  soft_snare_a = 2 # use drum_snare_soft for snare
+  hard_snare_a = 0.5 # use drum_snare_hard for clap
+  sample :drum_snare_hard, amp: hard_snare_a if pattern "----x-------x---"
+  sleep 0.25
+end
+live_loop :kick, sync: :metronome do
+  sample :drum_heavy_kick, amp: 1 if pattern "x---x---x---x---"
+  sleep 0.25
+end
