@@ -1,0 +1,41 @@
+Data Engineering 101 The Beginner's Guide [2026] - https://www.youtube.com/watch?v=v7pCoSGXqZI
+Walmart Data Engineering End to End Project (Airflow, DBT, Databricks) - https://www.youtube.com/watch?v=ZEE-jNAthB0
+
+LinkedIn Post - Master Data Engineering: https://www.linkedin.com/posts/sumonigupta_%F0%9D%97%A0%F0%9D%97%AE%F0%9D%98%80%F0%9D%98%81%F0%9D%97%B2%F0%9D%97%BF-%F0%9D%97%97%F0%9D%97%AE%F0%9D%98%81%F0%9D%97%AE-%F0%9D%97%98%F0%9D%97%BB%F0%9D%97%B4%F0%9D%97%B6%F0%9D%97%BB%F0%9D%97%B2%F0%9D%97%B2%F0%9D%97%BF%F0%9D%97%B6%F0%9D%97%BB%F0%9D%97%B4-activity-7485621780058107904-_pC1?utm_source=share&utm_medium=member_desktop&rcm=ACoAAB7fMFgBUu6VxJWYLzJe2p0sbWylqhE3H9w
+
+1. freecodecamp Data Engineering Course for Beginners: https://www.youtube.com/watch?v=PHsC_t0j1dU
+Notes:
+1. If you're running into an error with "exit code 1" @1:28:55, you need to update the Dockerfile @1:08:08. Goto the Dockerfile and "image: postgres:9.2" for both "source_postgres" and "destination_postgres"
+2. If you get the "pg_dump: error: aborting because of server version mismatch":
+I found that running "apt-get update && apt-get install -y postgresql-client" is actually installing version 15, while "postgres:latest: pulls version 16. 
+To fix this this, specify your image to be "postgres:15" for both the source_postgres and destination_postgres in the docker-compose.yaml.
+I also changed my RUN in command in Dockerfile to be  "apt-get update && apt-get install -y postgresql-client-15" to be explicit.
+
+2. Big Data Engineering Masterclass - https://www.youtube.com/watch?v=H5SHmiKTFsM
+Data Engineer Roadmap: https://github.com/anshlambagit/Data_Engineer_Roadmap
+
+3. Python for Data Engineers Full Course 2026 | Basics to Advanced - https://youtu.be/XMmfJFS_MFQ
+Link to all code & files used in the video tutorial: https://github.com/Jay61616/python-masterclass
+
+4. SQL for Big Data Engineering - https://youtu.be/b0TCqhP2P7I?t=2352
+Steps for setting up Azure free account for usage in projects: https://www.youtube.com/watch?v=4uKRzDf0zIc (timestamps - 20:17, 23:29, 28:59, 43:06, 59:11)
+Be sure to delete all Azure resources after finishing this course so that charges will not be incurred for resource usage (Azure free trial lasts for 30 days & includes 200 USD of credits)
+
+5. PostgreSQL Full Course For Beginners - https://www.youtube.com/watch?v=0UncmS4PWq0
+6. Linux Command Line For Beginners - https://lnkd.in/gA-7zFaQ
+7. Complete Git and GitHub Tutorial For Beginners - https://lnkd.in/gs73kHau
+8. Docker Tutorial For Beginners Full Course - https://lnkd.in/g59TCWPD
+9. Data Warehousing Complete Beginner's Guide - https://lnkd.in/gS_-iJAb
+10. Data Modeling Tutorial Star Schema and Kimball Approach - https://lnkd.in/g4it9vpy
+11. PySpark Tutorial for Beginners - https://lnkd.in/gre86dH6
+12. PySpark Full Course From Zero to Pro - https://lnkd.in/gZXg38hk
+13. Apache Kafka for Beginners Full Course - https://lnkd.in/gnnXc9_d
+14. Kafka Crash Course with a Hands-On Project - https://lnkd.in/gP6DFCem
+15. Apache Airflow Tutorial for Data Engineers - https://lnkd.in/gbFzzReZ
+16. dbt Tutorial with an End-to-End Netflix Project - https://lnkd.in/gHvmdjNX
+17. Build an ELT Pipeline with dbt, Snowflake and Airflow - https://lnkd.in/g5ZP_xC3
+18. AWS for Data Engineers Beginner’s Course - https://lnkd.in/g8vRZmkp
+19. Airbnb Data Engineering Project with Snowflake, dbt and AWS - https://lnkd.in/g2f4TxPW
+20. Real-Time E-Commerce Project with Kafka, Python and Snowflake - https://lnkd.in/g58V6A3P
+
+𝗥𝗲𝗰𝗼𝗺𝗺𝗲𝗻𝗱𝗲𝗱 𝗟𝗲𝗮𝗿𝗻𝗶𝗻𝗴 𝗢𝗿𝗱𝗲𝗿: Python → SQL → Linux → Git → Docker → Data Modeling → Data Warehousing → Spark → Kafka → Airflow → dbt → Cloud → Portfolio Projects
