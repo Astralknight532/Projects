@@ -17,7 +17,7 @@ Data Engineer Roadmap: https://github.com/anshlambagit/Data_Engineer_Roadmap
 3. Python for Data Engineers Full Course 2026 | Basics to Advanced - https://youtu.be/XMmfJFS_MFQ
 Link to all code & files used in the video tutorial: https://github.com/Jay61616/python-masterclass
 
-4. SQL for Big Data Engineering - https://youtu.be/b0TCqhP2P7I?t=11732
+4. SQL for Big Data Engineering - https://youtu.be/b0TCqhP2P7I
 Steps for setting up Azure free account for usage in projects: https://www.youtube.com/watch?v=4uKRzDf0zIc (timestamps - 20:17, 23:29, 28:59, 43:06, 59:11)
 Be sure to delete all Azure resources after finishing this course so that charges will not be incurred for resource usage (Azure free trial lasts for 30 days & includes 200 USD of credits)
 
