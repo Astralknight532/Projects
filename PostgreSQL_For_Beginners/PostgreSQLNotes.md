@@ -55,8 +55,24 @@
         - page (industry term) -> buffer (when block is on memory, PostgreSQL term, data stored in the table, each one is 8kb)
     
     - installation of PostgreSQL:
-        - OS user & permissions
-        - Installation options
+        - OS user & permissions:
+            - PostgreSQL Server runs as a daemon (Linux/Unix) or service (Windows)
+            - PostgreSQL Server requires superuser access
+            - All processes & data files must be owned by a user in the OS
+            - During the PostgreSQL installation, a locked user will be created on Linux, and on Windows, a password is required
+            - On SELinux systems, SELinux must be set to permissive mode
+            - the user account (for this tutorial):
+                - it's advised to run PostgreSQL Server under a separate user account
+                - this account should own the data directory that's managed by the server
+                - the user-add or add-user command can be used to add users
+                - the user account named PostgreSQL is used throughout this tutorial
+
+        - Installation options (4 methods):
+            - wizard installer (interactive method & easy download, but it's only supported on Windows & Mac)
+            - RPM installer (preferred installation method on Linux, requires access to an enterprise rpm repository, dependencies have to be resolved manually)
+            - YUM installer (attempts to install package & dependencies)
+            - using the source code
+
         - Installation of PostgreSQL server
         - Setting environment variables
 
