@@ -69,14 +69,61 @@
 
         - Installation options (4 methods):
             - wizard installer (interactive method & easy download, but it's only supported on Windows & Mac)
+                - download the .zip file from the PostgreSQL website (postgresql.org), extract the compressed installer, run the .exe installer as admin, & use the install wizard
             - RPM installer (preferred installation method on Linux, requires access to an enterprise rpm repository, dependencies have to be resolved manually)
             - YUM installer (attempts to install package & dependencies)
             - using the source code
+            - postgres, postgresroot
 
         - Installation of PostgreSQL server
         - Setting environment variables
 
 2. Database design
+    - system architecture
+    - architecture summary
+        - PostgreSQL Server uses processes instead of threads
+        - the postmaster process is also called a supervisor process
+        - the postmaster processes are responsible for starting all other processes
+        - utility processes carry their own background work
+        - each user session has its own backend process
+        - postmasters work as listeners (listening for new connections)
+
+    - memory architecture
+        - at the very top level is the postmaster
+        - the shared memory contains the shared buffers (all transactions on the database happen here), the WAL buffers (all transaction logs are kept here), & the process array
+        - other components:
+            - bgwriter
+            - stats collector
+            - autovacuum
+            - archive
+            - checkpointer
+            - walwriter
+            - logger
+            - logical rep
+        - storage components:
+            - data files
+            - WAL segments
+            - archived WAL
+            - error log files
+    
+    - utility processes
+        - background writer is responsible for writing "dirty" (new or modified) shared buffers to the disk
+        - checkpointer process automatically performs a checkpoint (every 5 minutes) based on config parameters
+        - WAL writer flushes the WAL to the disk
+        - autovacuum launcher starts autovacuum workers as needed
+        - autovacuum workers recover free space for reuse
+        - logging routes log messages to syslog, eventlog, or log files
+        - archiver archives the WAL files
+        - stats collector collects usage statistics by relation & block
+    
+    - connection request-response
+    - disk read & write buffering
+    - BG writer cleaning scan
+    - commit & checkpoint
+    - statement processing
+    - physical DB architecture
+    - data directory layout
+
 3. SQL queries
 4. Indexing
 5. Transactions
