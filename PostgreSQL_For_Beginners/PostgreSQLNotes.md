@@ -73,7 +73,7 @@
             - RPM installer (preferred installation method on Linux, requires access to an enterprise rpm repository, dependencies have to be resolved manually)
             - YUM installer (attempts to install package & dependencies)
             - using the source code
-            - postgres, postgresroot
+            - main login set by me: postgres, postgresroot
 
         - Installation of PostgreSQL server
         - Setting environment variables
@@ -90,14 +90,14 @@
 
     - memory architecture
         - at the very top level is the postmaster
-        - the shared memory contains the shared buffers (all transactions on the database happen here), the WAL buffers (all transaction logs are kept here), & the process array
+        - the shared memory contains the shared buffers (all transactions on the database happen here), the WAL buffers (WAL - write add logs, all transaction logs are kept here), & the process array
         - other components:
             - bgwriter
             - stats collector
             - autovacuum
             - archive
             - checkpointer
-            - walwriter
+            - walwriter (syncs the data after COMMIT statements - shared buffers are lost if the server goes down, but WAL buffers aren't)
             - logger
             - logical rep
         - storage components:
@@ -116,6 +116,45 @@
         - archiver archives the WAL files
         - stats collector collects usage statistics by relation & block
     
+    - postmaster is a master process called postgres that listens for only 1 port, and it's responsible for receiving client requests
+        - client sends connection request to the database server -> the postmaster receives the request and then sends it to the shared memory for processing
+    
+    - user backend process
+        - the postmaster process spawns a new process for each connection request
+        - authentication with IP address, username, and password
+        - authorization to verify permissions
+        - communication is done using semaphores & shared memory
+        - postmaster -> postgres (work memory - some memory is allocated for the postgres process to run queries) -> shared memory
+    
+    - respond to client
+        - once the user backend process called postgres is created, the postgres process waits for SQL queries (which are transmitted using plaintext)
+        - the client/user communicates only with the postgres process
+    
+    - disk read buffering
+        - the Postgres Server buffer cache reduces OS reads
+        - read the block once and then examine it many times in the cache
+        - the shared buffer contained inside the shared memory is used by multiple users to query the database
+    
+    - disk write buffering
+        - blocks are written to the disk only when needed
+        - this can be done to also make room for new blocks
+        - this is done at checkpoint time
+        - users write to the shared buffer (which is inside the shared memory), then the shared buffer makes a write to both the checkpoint & the database directly, and then the checkpoint writes to the database directly
+
+    - background write scan
+        - background writer scan attempts to ensure an adequate supply of clean buffers
+        - the backend writes "dirty" buffers as needed
+        - users write data to the shared buffer (which is inside shared memory) and then bgwriter writes the "dirty" buffers to the database as needed with the scan ensuring there are enough clean buffers
+    
+    - write ahead logging (WAL)
+        - the backend writes data to the WAL buffer
+        - WAL buffers are flushed periodically, either on commit or when the buffers are full
+        - users access the WAL buffers in the shared memory and the WAL buffers write to the transaction log on the database/server
+    
+    - WAL archiving
+        - archiver spawns a task to copy away pg_wal log files when full
+        - users access the WAL buffers in the shared memory, the WAL buffers write to the transaction log, and then the archive command copies the pg_wal log files
+
     - connection request-response
     - disk read & write buffering
     - BG writer cleaning scan
