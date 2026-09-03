@@ -73,7 +73,7 @@
             - RPM installer (preferred installation method on Linux, requires access to an enterprise rpm repository, dependencies have to be resolved manually)
             - YUM installer (attempts to install package & dependencies)
             - using the source code
-            - main login set by me: postgres, postgresroot
+            - main login set by me: postgres, postgresroot (sudo -u postgres psql)
 
         - Installation of PostgreSQL server
         - Setting environment variables
@@ -155,13 +155,81 @@
         - archiver spawns a task to copy away pg_wal log files when full
         - users access the WAL buffers in the shared memory, the WAL buffers write to the transaction log, and then the archive command copies the pg_wal log files
 
-    - connection request-response
-    - disk read & write buffering
-    - BG writer cleaning scan
     - commit & checkpoint
+        - before the commit -> uncommitted data is in memory
+        - after the commit -> WAL buffers are written to the disk & shared buffers are marked as committed
+        - after the checkpoint -> modified data pages are written from shared memory to the data files
+
     - statement processing
+        1. parse
+            - check syntax
+            - call traffic cop
+            - identify query type
+            - break query into tokens
+        
+        2. optimize
+            - the planner generates a plan
+            - uses database statistics
+            - query cost calculation
+            - chooses the best plan
+
+        3. execute
+            - execute the query based on the query plan
+
     - physical DB architecture
-    - data directory layout
+        - a cluster is a collection of databases managed by one server instance
+        - each cluster has its own separate data directory, port, & set of processes
+        - a cluster can contain multiple databases
+        - 1 file per table & 1 file per index
+        - a tablespace is a directory
+        - each database that uses that specific tablespace gets a subdirectory
+        - each relation that uses that specific database/tablespace combination gets 1 or more files, in 1GB chunks
+        - additional files are used to hold auxiliary information (free space map, visibility map)
+        - each file name is a number (see pg_class.relfilenode)
+
+    - PostgreSQL directory layout
+        - default installation directory location:
+            - Linux: /usr/postgresql-XX/bin
+            - Windows: C:\Program Files\postgreSQL\XX
+
+        - bin/ -> programs
+        - data/ -> data directory
+        - doc/ -> documentation
+        - lib/ -> libraries
+
+        - data directory layout
+            - data folders/directories:
+                - base (contains databases)
+                - global (contains cluster-wide database objects, cannot store user-created objects, only system ones)
+                - pg_wal (contains WAL files)
+                - pg_tblspc (contains symbolic links to tablespaces)
+                - log (contains error logs)
+                - status directories (pg_logical, pg_multixact, pg_notify, pg_replslot, pg_serial)
+                - config files (postgresql.auto.conf, postgresql.conf, pg_hba.conf, pg_ident.conf)
+                - other files
+
+- Creating & managing databases in PostgreSQL:
+    - objectives:
+        - hierarchy
+        - creating databases
+        - creating users
+        - creating schemas
+        - access controls
+        - schema search path
+    
+    - hierarchy:
+        - database cluster (top level, a group of databases)
+        - databases, user/groups/roles, tablespace (2nd level, within database clusters)
+        - schemas, catalogs, extensions (3rd level, within databases)
+        - tables, views, sequences, functions, triggers (4th level, within schemas)
+    
+    - databases
+        - a running PostgreSQL server instance can manage multiple databases
+        - a database is a named collection of SQL objects (it's a collection of schemas & schemas contain tables, functions, etc.)
+        - databases are created using the CREATE DATABASE command & destroyed using the DROP DATABASE command
+        - 2 ways to determine the set of existing databases:
+            1. SELECT datname FROM pg_database; -> using SQL
+            2. psql meta command - \l
 
 3. SQL queries
 4. Indexing
