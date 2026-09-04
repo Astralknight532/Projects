@@ -73,7 +73,6 @@
             - RPM installer (preferred installation method on Linux, requires access to an enterprise rpm repository, dependencies have to be resolved manually)
             - YUM installer (attempts to install package & dependencies)
             - using the source code
-            - main login set by me: postgres, postgresroot (sudo -u postgres psql)
 
         - Installation of PostgreSQL server
         - Setting environment variables
@@ -230,6 +229,43 @@
         - 2 ways to determine the set of existing databases:
             1. SELECT datname FROM pg_database; -> using SQL
             2. psql meta command - \l
+        - each cluster contains 3 databases by default (postgres, template0, template1)
+            - template0 cannot be used
+            - template1 is the default database for all user databases
+            - postgres is the default database that users are connected to when they first connect to postgres
+        - creating a database
+            - use the CREATE DATABASE command from the postgresql command line
+
+                CREATE DATABASE (db_name)
+                -- additional options (added on using the WITH keyword)
+                WITH OWNER = (user_name)
+                TEMPLATE = (template)
+                ENCODING = (encoding)
+                LC_COLLATE = (lc_collate)
+                LC_CTYPE = (lc_ctype)
+                TABLESPACE = (tablespace_name, default tablespace is pg_default)
+                ALLOW_CONNECTIONS = (allow_conn)
+                CONNECTION LIMIT = (conn_limit)
+                IS_TEMPLATE = (is_template, specifies whether this created database should be a template db)
+
+            - alternatively, use the createdb utility command to create a database from the OS command line
+
+            - example:
+                CREATE DATABASE demo_db owner postgres;
+                REVOKE CONNECT ON DATABASE demo_db FROM PUBLIC;
+                \connect demo_db
+                SELECT datname FROM pg_database;
+        
+        - connecting to a database
+            - use the psql tool from the command line to interactively enter, edit, & execute SQL commands/queries
+            - alternatively, use the pgadmin tool for a GUI
+            - how to use the psql tool to access a database:
+                1. open the command prompt or terminal
+                2. if the path environment variable is set, you can execute the command in step 3 from the bin directory location of the postgres installation
+                3. run one of the below commands (main login set by me: postgres, postgresroot): 
+                    - psql -u postgres postgres
+                    - psql -p (port number, default is 5432) -U postgres postgres(or other DB name)
+                    - sudo -u postgres psql -U postgres(or other username) postgres(or other DB name)
 
 3. SQL queries
 4. Indexing

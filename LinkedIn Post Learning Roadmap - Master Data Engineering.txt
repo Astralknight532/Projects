@@ -21,7 +21,7 @@ Link to all code & files used in the video tutorial: https://github.com/Jay61616
 Steps for setting up Azure free account for usage in projects: https://www.youtube.com/watch?v=4uKRzDf0zIc (timestamps - 20:17, 23:29, 28:59, 43:06, 59:11)
 Be sure to delete all Azure resources after finishing this course so that charges will not be incurred for resource usage (Azure free trial lasts for 30 days & includes 200 USD of credits)
 
-5. PostgreSQL Full Course For Beginners - https://youtu.be/0UncmS4PWq0?t=6097 (video seems to be outdated, uses PostgreSQL 13, need to find a newer video)
+5. PostgreSQL Full Course For Beginners - https://youtu.be/0UncmS4PWq0?t=6625 (video seems to be outdated, uses PostgreSQL 13, need to find a newer video)
 Possible newer videos for PostgreSQL:
 https://www.youtube.com/watch?v=gySEbKmkvEU
 
