@@ -262,10 +262,62 @@
             - how to use the psql tool to access a database:
                 1. open the command prompt or terminal
                 2. if the path environment variable is set, you can execute the command in step 3 from the bin directory location of the postgres installation
-                3. run one of the below commands (main login set by me: postgres, postgresroot): 
-                    - psql -u postgres postgres
-                    - psql -p (port number, default is 5432) -U postgres postgres(or other DB name)
-                    - sudo -u postgres psql -U postgres(or other username) postgres(or other DB name)
+                3. run one of the below commands (postgres main login set by me: postgres, postgresroot): 
+                    - psql -u (username) (db_name)
+                    - psql -p (port number, default is 5432) -U postgres (db_name)
+                    - sudo -u postgres psql -U (username) (db_name) -> uses peer authentication (which only works on Unix sockets) & will fail if the current system user doesn't match the peer
+                    - psql -U (username) -h (host) -d (db_name) -> uses TCP/IP with password auth for regular user logins
+                    - for applications:
+                        - use this connection string: postgresql://(username):(password)@(host):(port)/(database_name)
+                        - instead of using this connection string: postgresql://(username):(password)@/(database_name)
+            - create database (postgres command line), createdb (Linux command line)
+            - drop database (postgres command line), dropdb (Linux command line)
+            - alter database (postgres command line)
+        
+        - users
+            - database users are completely separate from the OS users
+            - database users are global across the database cluster
+            - usernames must be unique & can't start with pg_
+            - every connection made to a database is made as a user
+            - postgres is a predefined superuser in the default database cluster
+            - a predefined superuser name can be specified during initialization of a database cluster
+            - this predefined superuser has all privileges, including the ability to grant permissions to other users
+            - creating users
+                - SQL commands
+                    - CREATE USER (user_name) WITH (options)
+                        - options:
+                            - SUPERUSER/NOSUPERUSER
+                            - CREATEDB/NOCREATEDB
+                            - CREATEROLE/NOCREATEROLE
+                            - INHERIT/NOINHERIT
+                            - LOGIN/NOLOGIN
+                            - REPLICATION/NOREPLICATION
+                            - BYPASSRLS/NOBYPASSRLS
+                            - CONNECTION LIMIT (conn_limit)
+                            - ENCRYPTED PASSWORD '(password)'
+                            - PASSWORD NULL
+                            - VALID UNTIL (timestamp)
+                    - CREATE ROLE
+
+                - OS utility for createuser
+                    - createuser (options) (rolename)
+                    - options:
+                        -c/--connection-limit=N -> connection limit for role (default value is no limit)
+                        -d/--createdb -> role can create new databases
+                        -D/--nocreatedb -> role can't create new databases (default if not specified in role permissions)
+                        -e/--echo -> show the commands being sent to the server
+                        -g/--role=ROLE -> new role will be a member of this role
+                        -i/--inherit -> role inherits the privileges of the roles it's a member of (default if not specified in role permissions)
+                        -I/--noinherit -> role doesn't inherit privileges of roles it's a member of
+                        -l/--login -> role can login (default if not specified in role permissions)
+                        -L/--nologin -> role can't login
+                        -P/--pwprompt -> assign a password to a new role
+                        -r/--createrole -> role can create new roles
+                        -R/--nocreaterole -> role can't create new roles (default if not specified in role permissions)
+                        -s/--superuser -> role is a superuser
+                        -S/--no-superuser -> role isn't a superuser (default if not specified in role permissions)
+
+                - only superusers as well as users with the createrole privilege can create new users 
 
 3. SQL queries
 4. Indexing
