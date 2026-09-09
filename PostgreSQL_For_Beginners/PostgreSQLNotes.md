@@ -257,13 +257,19 @@
                 SELECT datname FROM pg_database;
         
         - connecting to a database
+            - users:
+                - postgres main login set by me: postgres, postgresroot
+                - demouser, demousertestpw
+                - demouser_u1, demouser1testpw
+                - demouser_u2, demouser2testpw
+                - demouser_u3, demouser3testpw
+
             - use the psql tool from the command line to interactively enter, edit, & execute SQL commands/queries
             - alternatively, use the pgadmin tool for a GUI
             - how to use the psql tool to access a database:
                 1. open the command prompt or terminal
                 2. if the path environment variable is set, you can execute the command in step 3 from the bin directory location of the postgres installation
-                3. run one of the below commands (postgres main login set by me: postgres, postgresroot): 
-                    - psql -u (username) (db_name)
+                3. run one of the below commands
                     - psql -p (port number, default is 5432) -U postgres (db_name)
                     - sudo -u postgres psql -U (username) (db_name) -> uses peer authentication (which only works on Unix sockets) & will fail if the current system user doesn't match the peer
                     - psql -U (username) -h (host) -d (db_name) -> uses TCP/IP with password auth for regular user logins
