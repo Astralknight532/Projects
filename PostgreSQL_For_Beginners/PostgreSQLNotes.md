@@ -325,6 +325,76 @@
 
                 - only superusers as well as users with the createrole privilege can create new users 
 
+    - Intro to psql
+        - psql is the name of the PostgreSQL binary file
+        - psql provides a terminal-based front-end for PostgreSQL Server, enabling you to run SQL queries interactively
+
+    - Connecting to a database
+        - you need to know the target database's name, the host name, the server's port number, & the username of the user to login as
+        - use command line options (-d, -h, -U, -p, etc.) to provide these values
+        - set environment variables:
+            - PGDATABASE
+            - PGHOST
+            - PGPORT
+            - PGUSER
+    
+    - Conventions
+        - psql has its own set of commands that all start with backslash \, and they operate in the server but aren't related to SQL commands
+        - some psql commands accept a pattern (modified regex):
+            - asterisk(*) and ? are wildcards
+            - double quotes are used to specify and exact name, ignoring special characters & preserving case
+        - -f (FILENAME) will execute the commands in the specified .sql file FILENAME & then exit
+        - -c (COMMAND) will execute the specified command COMMAND (either SQL or psql internal) & then exit
+        - --help displays all startup options & then exits
+        - --version displays version info & then exits
+    
+    - Controlling output
+        - -o (FILENAME) or \o (FILENAME) will send query output (excluding STDERR) to FILENAME, which may be a pipe
+        - \g (FILENAME) executes the query buffer & sends output to FILENAME, which may be a pipe
+        - -q runs it quietly
+
+    - Variables
+        - psql provides variable substitution
+        - variables are simply name/value pairs
+        - use \set (a meta command) to set a variable
+            \set city Mumbai
+            \echo :city
+            Mumbai
+        - use \unset to delete a variable
+            \unset city
+        - special variables
+            - settings can be changed at runtime by altering special variables
+            - important special variables:
+                - AUTOCOMMIT
+                - ENCODING
+                - HISTFILE
+                - ON_ERROR_ROLLBACK
+                - ON_ERROR_STOP
+                - PROMPT1
+                - VERBOSITY
+            - example of special variable usage:
+                \set AUTOCOMMIT off
+                - once AUTOCOMMIT is set to off, use COMMIT & ROLLBACK to complete the running transaction
+    - Information commands
+        - \d(i, s, t, v, S)(+) (pattern) -> lists info about indexes, sequences, tables, views, or system objects
+        - \d(+) (pattern) -> for each relation/table, describe/display the relation structure details. without a pattern, \d[+] is equivalent to \dtvs[+]
+        - \l(+) or \list(+) -> lists the names, owners, & character set encodings of all databases in the cluster
+        - \dn(+) (pattern) -> lists schemas
+        - \df(+) (pattern) -> lists functions
+        - \db(+) -> lists tablespaces
+    
+    - Other meta commands
+        - \conninfo -> current connection info
+        - \q or ^d -> quits the psql program
+        - \cd directory -> changes current working directory
+        - \ ! pwd -> prints current working directory
+        - \ ! (command) -> executes the specified OS command, and if no command is specified, it escapes to a separate Unix shell (or cmd.exe on Windows)
+
+    - Help commands
+        - \? -> shows help info about psql commands
+        - \h (command) -> shows info about SQL commands, and if a command isn't specified, it lists all SQL commands
+        - psql --help -> lists command line options for psql
+
 3. SQL queries
 4. Indexing
 5. Transactions
