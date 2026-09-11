@@ -424,6 +424,58 @@
             - pgadmin has a portable version that allows you to easily move data between machines
 
 - Database security
+    - objectives:
+        - requirements
+        - protection plan
+        - PostgreSQL security options
+        - host-based access control
+        - authorized access
+        - row-level security
+        - data encryption
+        - best practices
+
+    - databases are a core component of many computing systems
+    - confidential data like SIN, healthcare details, & banking details are stored & shared using databases
+    - it's very critical to protect stored info from hackers, insiders, & other groups who intend to steal valuable data
+    - database security is a mechanism to protect critical business data against threats
+    - authentication & authorization (the 2 steps required for secure access to databases):
+        - authentication ensures that a user is who they claim to be
+        - authorization ensures that an authenticated user only has access to the data for which they've been granted the appropriate privileges
+    - the levels of security in PostgreSQL:
+        1. server & application (check client IP address, pg_hba.conf file - client IP addresses must be added to this file for them to be allowed to connect to the database)
+        2. database (username/password, connection privilege, schema, permissions)
+        3. object (table-level privileges, grant/revoke)
+    - the pg_hba.conf file:
+        - authentication is controlled via a pg_hba.conf file (hba stands for host-based authentication)
+        - this file is often located in the data directory, but its location can also be specified in the postgresql.conf configuration file
+        - when changing the authentication, you need to send a SIGHUP signal, which can be done via several methods based on the PostgreSQL platform
+        - the order of the records/entries in the pg_hba.conf file is important
+        - the session connection is compared with each record in the pg_hba.conf file one by one until it's matched, rejected or the end of the file is reached
+        - finally, it's important to check the PostgreSQL log files for any errors that may have occurred after configuration reload
+        - the file is read (from top to bottom) at startup & any change to it requires a reload
+        - the file contains a set of records (one per line)
+        - each record specifies connection type, database name, user name, client IP address, & method of authentication
+        - hostnames, IPv4, & IPv6 are supported
+        - supported authentication methods:
+            - trust
+            - reject
+            - md5
+            - password
+            - gss
+            - sspi
+            - krb5
+            - ident
+            - peer
+            - pam
+            - ldap
+            - radius
+            - cert
+            - scramsha256
+        - authentication problems:
+            - self-explanatory message is displayed
+            - verify database name, username, & client IP address in pg_hba.conf file
+            - reload cluster after changing pg_hba.conf file
+            - check server log for more info
 
 3. SQL queries
 4. Indexing
