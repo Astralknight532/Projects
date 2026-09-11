@@ -395,6 +395,36 @@
         - \h (command) -> shows info about SQL commands, and if a command isn't specified, it lists all SQL commands
         - psql --help -> lists command line options for psql
 
+    - GUI tools
+        - PostgreSQL GUI tools help open-source database users manage, manipulate, & visualize their data
+        - examples of PostgreSQL GUI tools:
+            - pgadmin
+            - dbeaver (works with other databases too)
+            - omnidb
+                - can easily configure it by adding or removing connections
+                - the smart SQL editor helps you write SQL queries with autocomplete & syntax highlighting
+                - adds complete debugging capabilities to PostgreSQL functions & procedures
+                - you can monitor the dashboard from customizable charts that show real-time info about your databases
+                - query plan visualization helps you find bottlenecks in SQL queries
+                - lets you access databases from multiple computers using encrypted personal info/credentials
+                - developers can add & share new features via plugins
+        - benefits of using a GUI tool:
+            - shortcut keys make it easier to use, as well as making it easier for new users to learn
+            - it offers great visualization tools to help you interpret data
+            - you can remotely access & navigate other database servers
+            - the window-based interface makes it easier to manage your PostgreSQL data
+            - it also provides easier access to files, features, & the OS
+        - why PostgreSQL users like pgadmin:
+            - create, view, & edit all common PostgreSQL objects
+            - graphical query planning tool with syntax highlighting
+            - the dashboard lets you monitor server activities (database locks, connected sessions, prepared transactions, etc.)
+            - since pgadmin is a web application, it can be deployed on any server & accessed remotely
+            - the pgadmin UI consists of detachable panels that can be arranged according to your preferences
+            - the procedural language debugger helps you to debug code
+            - pgadmin has a portable version that allows you to easily move data between machines
+
+- Database security
+
 3. SQL queries
 4. Indexing
 5. Transactions
