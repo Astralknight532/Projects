@@ -263,6 +263,9 @@
                 - demouser_u1, demouser1testpw
                 - demouser_u2, demouser2testpw
                 - demouser_u3, demouser3testpw
+                - kalyan, ktest1
+                - jack, jtest1
+                - mark, mtest1
 
             - use the psql tool from the command line to interactively enter, edit, & execute SQL commands/queries
             - alternatively, use the pgadmin tool for a GUI
@@ -476,6 +479,53 @@
             - verify database name, username, & client IP address in pg_hba.conf file
             - reload cluster after changing pg_hba.conf file
             - check server log for more info
+    - row-level security (RLS)
+        - allows a database admin to set policies that restrict users from viewing or manipulating specific rows of data in a table
+        - depending on the use case, this can be useful in blocking access to sensitive records like customer or financial data
+        - GRANT & REVOKE can be used at the object level
+        - by default, all rows of a table are visible
+        - once RLS is enabled on a table, all queries using that table must go through the security policy
+        - security policies are controlled by database admins rather than an application
+        - RLS offers stronger security since it's enforced by the database itself
+        - example:
+            CREATE TABLE emp (
+                empno NUMERIC(4) NOT NULL CONSTRAINT emp_pk PRIMARY KEY,
+                ename VARCHAR(10),
+                job VARCHAR(9),
+                mgr NUMERIC(4),
+                hiredate DATE,
+                sal NUMERIC(7, 2),
+                comm NUMERIC(7, 2),
+                deptno NUMERIC(2)
+            );
+            ALTER TABLE emp ENABLE ROW LEVEL SECURITY;
+        - example (create a policy):
+            - to create a policy on a table, using the CREATE POLICY command
+                CREATE POLICY emp_name ON emp TO users USING (ename = current_user);
+            - to allow all users to view their own row in a user table, use a simple policy:
+                CREATE POLICY emp_policy ON emp USING (ename = current_user);  
+    - data encryption
+        - encrypting everything doesn't necessarily make data secure
+        - resources are consumed when querying encrypted data
+        - pgcrypto provides a mechanism for encrypting selected columns, and it supports both 1-way & 2-way data encryption
+        - install pgcrypto using the CREATE EXTENSION command -> CREATE EXTENSION pgcrypto;
+    - best practices for database servers
+        - always keep the system patched with the latest version
+        - don't put a postmaster port on the internet (which is port 5432 by default)
+        - isolate the database port from other network traffic (use network mapping)
+        - don't rely solely on the front-end application to prevent unauthorized access to the database
+        - never use the trust authentication option in the pg_hba.conf file
+    - best practices for database users
+        - provide each user with their own login
+        - give users the minimum access required for them to do their jobs
+        - use roles & classes of privileges
+        - use views & view security barriers
+        - use row-level security
+    - best practices for database superusers
+        - only allow the database superuser(s) to login from the server machine itself (with either local or localhost connection)
+        - reserve the use of superuser accounts only for tasks/roles where it's absolutely required
+        - restrict config file (postgresql.conf & pg_hba.conf) & log file (pg_log) access to administrators only
+        - disallow host system login by database superuser roles
 
 3. SQL queries
 4. Indexing
